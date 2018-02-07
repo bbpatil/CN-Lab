@@ -19,7 +19,7 @@
 simple PL
 {
     parameters:
-        int id;
+        int Pid;
     gates:
         input PDin;
         input PNin;
