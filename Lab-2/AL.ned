@@ -19,7 +19,7 @@
 simple AL
 {
     parameters:
-        int id;
+        int Aid;
     gates:
         input Ain;
         output Aout;
