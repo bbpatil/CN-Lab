@@ -17,7 +17,25 @@ module Node
 {
     parameters:
         int id;
+        
     gates:
         input in;
         output out;
+        
+    submodules:
+        al:AL{
+            //id = 1;
+        }
+        dl:DL{
+        	//id=1;
+        }
+        pl:PL{
+        	//id=1;
+        }
+        
+        connections:
+            pl.PDout-->dl.DPin;
+            pl.PDin<--dl.DPout;
+            dl.DAout-->al.Ain;
+            dl.DAin<--al.Aout;
 }
