@@ -34,8 +34,10 @@ module Node
         }
         
         connections:
+            in-->pl.Nin;
             pl.PDout-->dl.DPin;
             pl.PDin<--dl.DPout;
             dl.DAout-->al.Ain;
             dl.DAin<--al.Aout;
+            pl.Nout-->out;
 }
