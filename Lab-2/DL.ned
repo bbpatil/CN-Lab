@@ -19,7 +19,7 @@
 simple DL
 {
     parameters:
-        int id;
+        int Did;
     gates:
         input DAin;
         output DAout;
