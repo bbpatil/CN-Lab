@@ -30,12 +30,17 @@ void Data::handleMessage(cMessage *msg)
 {
     cMessage* msg2 = new cMessage();
     std::cout<<"NotSelfMessage(DATA)"<<std::endl;
-    if(strcmp("app->data",getName())==0){
+    /*if(strcmp("app->data",getName())==0){
         std::cout<<"app->data"<<endl;
         send(msg2,"data->phy");
     }
     if(strcmp("phy->data",getName())==0){
         std::cout<<"phy->data"<<endl;
         send(msg2,"data->app");
+    }
+    */
+    if(strcmp("Ain",msg->getArrivalGate()->getBaseName())==0){
+        A_PDU* message = dynamic_cast<A_PDU*>(msg);
+        P_PDU *myMessage = new P_PDU();
     }
 }
