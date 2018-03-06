@@ -28,7 +28,7 @@ class Data : public cSimpleModule
     cGate* dainGate;
     cGate* daoutGate;
     cGate* dpinGate;
-    cGate* dPoutGate;
+    cGate* dpoutGate;
     int dAddress;
   protected:
     virtual void initialize();
