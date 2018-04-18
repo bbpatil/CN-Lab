@@ -1,0 +1,313 @@
+#written by Kudo
+
+Specifying an MTU size for a network interface
+
+The maximum transmission unit (MTU) size is used to specify the jumbo frame size on 1 Gigabit Ethernet and 10 Gigabit interfaces. You can specify the MTU size for transmission between the storage system and its client by using the ifconfig command. 
+
+cn15-2@cselab1pc74:~$ ip lin
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: enp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
+    link/ether 34:64:a9:1f:77:db brd ff:ff:ff:ff:ff:ff
+
+cn15-2@cselab1pc74:~$ ifconfig
+enp3s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.22.12.84  netmask 255.255.254.0  broadcast 172.22.13.255
+        inet6 fe80::3664:a9ff:fe1f:77db  prefixlen 64  scopeid 0x20<link>
+        ether 34:64:a9:1f:77:db  txqueuelen 1000  (Ethernet)
+        RX packets 102576  bytes 133760700 (133.7 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 38848  bytes 4095477 (4.0 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 222  bytes 15522 (15.5 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 222  bytes 15522 (15.5 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+cn15-2@cselab1pc74:~/Desktop$ ip route
+default via 172.22.12.1 dev enp3s0 onlink 
+169.254.0.0/16 dev enp3s0 scope link metric 1000 
+172.22.12.0/23 dev enp3s0 proto kernel scope link src 172.22.12.84 
+
+cn15-2@cselab1pc74:~/Desktop$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         172.22.12.1     0.0.0.0         UG    0      0        0 enp3s0
+link-local      0.0.0.0         255.255.0.0     U     1000   0        0 enp3s0
+172.22.12.0     0.0.0.0         255.255.254.0   U     0      0        0 enp3s0
+
+
+cn15-2@cselab1pc74:~/Desktop$ ip neigh 
+\172.22.12.1 dev enp3s0 lladdr 00:23:33:93:86:cb REACHABLE
+
+
+cn15-2@cselab1pc74:~/Desktop$ arp
+Address                  HWtype  HWaddress           Flags Mask            Iface
+172.22.12.1              ether   00:23:33:93:86:cb   C                     enp3s0
+
+
+cn15-2@cselab1pc74:~/Desktop$ netstat | grep ESTABLISHED | wc -l
+6
+
+
+cn15-2@cselab1pc74:~/Desktop$ netstat | grep tcp
+tcp        0      0 172.22.12.84:52520      del03s05-in-f14.1:https ESTABLISHED
+tcp        0      0 172.22.12.84:43160      172.22.2.99:ldap        ESTABLISHED
+tcp        0      0 172.22.12.84:41318      172.22.2.9:microsoft-ds ESTABLISHED
+tcp        0      0 172.22.12.84:43746      74.125.24.189:https     ESTABLISHED
+tcp        0      0 172.22.12.84:59934      stackoverflow.com:https ESTABLISHED
+
+
+cn15-2@cselab1pc74:~/Desktop$ netstat | grep tcp | wc -l
+5
+
+
+tcp        0      0 172.22.12.84:52520      del03s05-in-f14.1:https ESTABLISHED
+tcp        0      0 172.22.12.84:43160      172.22.2.99:ldap        ESTABLISHED
+tcp        0      0 172.22.12.84:41318      172.22.2.9:microsoft-ds ESTABLISHED
+tcp        0      0 172.22.12.84:43746      74.125.24.189:https     ESTABLISHED
+tcp        0      0 172.22.12.84:59934      stackoverflow.com:https ESTABLISHED
+tcp        0      0 172.22.12.84:47976      kul06s17-in-f229.:https ESTABLISHED
+
+
+cn15-2@cselab1pc74:~/Desktop$ netstat -nap | grep -o 'CONNECTED\|LISTENING' | wc -l
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+793
+
+
+
+
+Use the command : sudo lsof -i -n -P
+
+This command lists the Application Name, PID, User, IP version, Device ID and the Node with Port Name. It shows both TCP and UDP.
+
+Variations :
+
+    To format it in a nice, readable way; use :
+
+    sudo lsof -i -n -P | more
+
+    To view view only TCP connections :
+
+    sudo lsof -i -n -P | grep TCP | more
+1:44 / 3:03
+Up next
+Autoplay
+12:24
+Top 10 Wireshark Filters
+Chris Greer
+210K views
+14:22
+Wireshark Tutorial for Beginners
+Anson Alexander
+422K views
+57:17
+The Complete Wireshark Course: Go from Beginner to Advanced!
+Ermin Kreponic
+148K views
+43:52
+How to read Wireshark Output
+Dan Morrill
+310K views
+3:09
+Really Slow Motion - This is Your Way (Epic Dramatic Trailer)
+Epic Heaven Music
+Recommended for you
+6:06
+How to Capture Mobile Device Network Traffic
+Macgyver
+4.4K views
+2:34
+Free 1 Hour Wireshark and Network Troubleshooting Classes
+The Technology Firm
+329 views
+6:10
+See what People are Browsing on your WiFi [OpenDNS]
+TechWiser
+661K views
+7:14
+Fearless Motivation - Revival (Epic Motivational Heroic Orchestral)
+Trailer Music World I
+Recommended for you
+5:51
+Germany 7-1 Brazil 2014 World Cup Semi Final Highlight HD/720P
+NIXBLACK
+Recommended for you
+Capturing with Multiple Interfaces Using Wireshark
+The Technology Firm
+8.3K views
+World's Most Heroic Emotional Music | by Sky Mubs
+Epic Music World
+Recommended for you
+Capturing using Wireshark & rpcapd
+The Technology Firm
+6.4K views
+How to perform a remote network capture with tshark
+R Z Feeser
+5.4K views
+What is a MAC Address?
+Techquickie
+436K views
+Most Wondrous Battle Music: "And The Sky Shall Unfold" by Johannes Bornlöf
+HDSounDI
+Recommended for you
+Twelve Titans Music - Monolith (Epic Massive Trailer Action)
+Epic Heaven Music
+Recommended for you
+WireShark : Capture Filters Exercise DHCP, FTP, HTTP
+Be Explained
+1K views
+Wireshark How to identify 1 way audio in a wireshark trace 1
+EverleaGroup
+3.8K views
+How TCP Works - The Handshake
+Chris Greer
+22K views
+Capture remote traffic with Wireshark and a MAC filter
+3,089 views
+17
+1
+Share
+The Technology Firm
+Published on Oct 30, 2016
+Capturing Remote Packets Tip 
+The trick to successful protocol analysis is the ability to spot patterns. Unfortunately patterns are usually intertwined between many other packets and untangling them is challenging at best.
+This is where filters come into play. Capture or Display filters help you find those patterns.
+The skill of protocol analysis is determining what filter to use. I use the word ‘skill’ intentionally since we all have access to the filters in Wireshark but its how you use those filters what make Wireshark and the analyst effective.
+.. read the rest at http://www.lovemytool.com/blog/2016/1...
+
+    To view view only UDP connections :
+
+    sudo lsof -i -n -P | grep UDP | more
+
+
+cn15-2@cselab1pc74:~/Desktop$ lsof -i -n -P
+COMMAND  PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+firefox 2639 cn15-2   61u  IPv4 501530      0t0  TCP 172.22.12.84:36646->172.217.24.228:443 (ESTABLISHED)
+firefox 2639 cn15-2   74u  IPv4 436971      0t0  TCP 172.22.12.84:46974->172.217.24.226:443 (ESTABLISHED)
+firefox 2639 cn15-2   92u  IPv4 117065      0t0  TCP 172.22.12.84:59934->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2   99u  IPv4 380693      0t0  TCP 172.22.12.84:60394->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2  105u  IPv4 435139      0t0  TCP 172.22.12.84:60440->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2  111u  IPv4 298249      0t0  TCP 172.22.12.84:43746->74.125.24.189:443 (ESTABLISHED)
+firefox 2639 cn15-2  119u  IPv4 404737      0t0  TCP 172.22.12.84:48012->172.217.24.229:443 (ESTABLISHED)
+firefox 2639 cn15-2  126u  IPv4 502959      0t0  TCP 172.22.12.84:54864->151.101.193.69:443 (ESTABLISHED)
+firefox 2639 cn15-2  131u  IPv4 502465      0t0  TCP 172.22.12.84:47624->172.217.24.225:443 (ESTABLISHED)
+firefox 2639 cn15-2  152u  IPv4 214054      0t0  TCP 172.22.12.84:52520->172.217.24.238:443 (ESTABLISHED)
+firefox 2639 cn15-2  156u  IPv4 503956      0t0  TCP 172.22.12.84:52844->172.217.24.238:443 (ESTABLISHED)
+firefox 2639 cn15-2  164u  IPv4 504908      0t0  TCP 172.22.12.84:35976->216.58.196.214:443 (ESTABLISHED)
+firefox 2639 cn15-2  165u  IPv4 501678      0t0  TCP 172.22.12.84:50888->104.16.108.18:443 (ESTABLISHED)
+firefox 2639 cn15-2  169u  IPv4 435103      0t0  TCP 172.22.12.84:55262->172.217.24.227:443 (ESTABLISHED)
+firefox 2639 cn15-2  173u  IPv4 501677      0t0  TCP 172.22.12.84:38396->172.217.26.234:443 (ESTABLISHED)
+firefox 2639 cn15-2  178u  IPv4 501679      0t0  TCP 172.22.12.84:51928->104.119.59.245:443 (ESTABLISHED)
+
+
+cn15-2@cselab1pc74:~/Desktop$ lsof -i -n -P | grep TCP | more
+firefox 2639 cn15-2   61u  IPv4 520881      0t0  TCP 172.22.12.84:34006->172.217.166.170:443 (ESTABLISHED)
+firefox 2639 cn15-2   90u  IPv4 522695      0t0  TCP 172.22.12.84:36678->172.217.24.228:443 (ESTABLISHED)
+firefox 2639 cn15-2   92u  IPv4 117065      0t0  TCP 172.22.12.84:59934->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2   99u  IPv4 380693      0t0  TCP 172.22.12.84:60394->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2  105u  IPv4 435139      0t0  TCP 172.22.12.84:60440->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2  111u  IPv4 298249      0t0  TCP 172.22.12.84:43746->74.125.24.189:443 (ESTABLISHED)
+firefox 2639 cn15-2  119u  IPv4 404737      0t0  TCP 172.22.12.84:48012->172.217.24.229:443 (ESTABLISHED)
+firefox 2639 cn15-2  126u  IPv4 518657      0t0  TCP 172.22.12.84:52862->172.217.24.238:443 (ESTABLISHED)
+firefox 2639 cn15-2  152u  IPv4 214054      0t0  TCP 172.22.12.84:52520->172.217.24.238:443 (ESTABLISHED)
+firefox 2639 cn15-2  154u  IPv4 520872      0t0  TCP 172.22.12.84:47004->172.217.24.226:443 (ESTABLISHED)
+firefox 2639 cn15-2  156u  IPv4 524643      0t0  TCP 172.22.12.84:47654->172.217.24.225:443 (ESTABLISHED)
+firefox 2639 cn15-2  160u  IPv4 516867      0t0  TCP 172.22.12.84:60468->198.252.206.25:443 (ESTABLISHED)
+firefox 2639 cn15-2  162u  IPv4 520165      0t0  TCP 172.22.12.84:54892->151.101.193.69:443 (ESTABLISHED)
+firefox 2639 cn15-2  165u  IPv4 524640      0t0  TCP 172.22.12.84:55292->172.217.24.227:443 (ESTABLISHED)
+firefox 2639 cn15-2  180u  IPv4 524666      0t0  TCP 172.22.12.84:50918->104.16.108.18:443 (ESTABLISHED)
+
+
+
+Frame 10: 151 bytes on wire (1208 bits), 151 bytes captured (1208 bits) on interface 0
+Ethernet II, Src: Cisco_93:86:cb (00:23:33:93:86:cb), Dst: HewlettP_1f:77:db (34:64:a9:1f:77:db)
+    Destination: HewlettP_1f:77:db (34:64:a9:1f:77:db)
+    Source: Cisco_93:86:cb (00:23:33:93:86:cb)
+    Type: IPv4 (0x0800)
+Internet Protocol Version 4, Src: 172.217.160.238, Dst: 172.22.12.84
+Transmission Control Protocol, Src Port: 443, Dst Port: 41240, Seq: 1, Ack: 653, Len: 85
+Secure Sockets Layer
+
+
+Protocols -
+Frame 2: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+Ethernet II, Src: Cisco_93:86:cb (00:23:33:93:86:cb), Dst: HewlettP_1f:7f:fd (34:64:a9:1f:7f:fd)
+Internet Protocol Version 4, Src: 172.22.2.191, Dst: 172.22.12.95
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0x2173 (8563)
+    Flags: 0x02 (Don't Fragment)
+    Fragment offset: 0
+    Time to live: 127
+    Protocol: TCP (6)
+    Header checksum: 0x7306 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 172.22.2.191
+    Destination: 172.22.12.95
+    [Source GeoIP: Unknown]
+    [Destination GeoIP: Unknown]
+Transmission Control Protocol, Src Port: 57942, Dst Port: 62123, Seq: 0, Len: 0
+
+
+Ip Address -
+
+Frame 2: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+Ethernet II, Src: Cisco_93:86:cb (00:23:33:93:86:cb), Dst: HewlettP_1f:7f:fd (34:64:a9:1f:7f:fd)
+Internet Protocol Version 4, Src: 172.22.2.191, Dst: 172.22.12.95
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 52
+    Identification: 0x2173 (8563)
+    Flags: 0x02 (Don't Fragment)
+    Fragment offset: 0
+    Time to live: 127
+    Protocol: TCP (6)
+    Header checksum: 0x7306 [validation disabled]
+    [Header checksum status: Unverified]
+    Source: 172.22.2.191
+    Destination: 172.22.12.95
+    [Source GeoIP: Unknown]
+    [Destination GeoIP: Unknown]
+Transmission Control Protocol, Src Port: 57942, Dst Port: 62123, Seq: 0, Len: 0
+
+
+Packet Header Info -
+
+Frame 2: 66 bytes on wire (528 bits), 66 bytes captured (528 bits) on interface 0
+    Interface id: 0 (enp3s0)
+    Encapsulation type: Ethernet (1)
+    Arrival Time: Apr 18, 2018 11:21:32.277073396 IST
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1524030692.277073396 seconds
+    [Time delta from previous captured frame: 0.321148840 seconds]
+    [Time delta from previous displayed frame: 0.321148840 seconds]
+    [Time since reference or first frame: 0.321148840 seconds]
+    Frame Number: 2
+    Frame Length: 66 bytes (528 bits)
+    Capture Length: 66 bytes (528 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp]
+    [Coloring Rule Name: TCP SYN/FIN]
+    [Coloring Rule String: tcp.flags & 0x02 || tcp.flags.fin == 1]
+Ethernet II, Src: Cisco_93:86:cb (00:23:33:93:86:cb), Dst: HewlettP_1f:7f:fd (34:64:a9:1f:7f:fd)
+Internet Protocol Version 4, Src: 172.22.2.191, Dst: 172.22.12.95
+Transmission Control Protocol, Src Port: 57942, Dst Port: 62123, Seq: 0, Len: 0
+
+
+
