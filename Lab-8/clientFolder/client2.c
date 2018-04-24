@@ -52,6 +52,10 @@ int main(){
   }
 
   scanf("%s", fname);
+  /*
+  write() Format-
+  ssize_t write(int fs, const void *buf, size_t N);
+  */
   int bytes_sent = write(clientSock, fname, strlen(fname));         // how to use write() ?
   //printf("sent c : %d", bytes_sent);
 
