@@ -74,6 +74,22 @@ int main(){
     {
         sz++;
         printf("bytesReceived: %d\n", bytesReceived);
+      /*
+        fflush() is typically used for output stream only. 
+        Its purpose is to clear (or flush) the output buffer and move the buffered data to console (in case of stdout) or 
+        disk (in case of file output stream). Below is its syntax.
+
+        fflush(FILE *ostream);
+
+        ostream points to an output stream 
+        or an update stream in which the 
+        most recent operation was not input, 
+        the fflush function causes any 
+        unwritten data for that stream to 
+        be delivered to the host environment 
+        to be written to the file; otherwise, 
+        the behavior is undefined.
+      */
         fflush(stdout);
         // recvBuff[n] = 0;
         fprintf(fp,"%s",recvBuff);
