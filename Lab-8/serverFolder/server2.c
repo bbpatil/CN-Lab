@@ -24,7 +24,7 @@ int main(){
   serverAddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
   memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
 
-  bind(sockfd, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
+  bind(sockfd, (struct sockaddr *) &serverAddr, sizeof(serverAddr));		// using bind ?
 
   if(listen(sockfd,1)==0)
     printf("Listening on the port fmor the client\n");
@@ -32,12 +32,12 @@ int main(){
     printf("Listening error\n");
 
   addr_size = sizeof serverStorage;
-  clientSocket = accept(sockfd, (struct sockaddr *) &serverStorage, &addr_size);
+  clientSocket = accept(sockfd, (struct sockaddr *) &serverStorage, &addr_size);	// using accept ?
   printf("Connection accepted......\n");
   printf("Sending the file names to the client.....\n");
 	DIR *d;
 	struct dirent *dir;
-  	d = opendir("/Users/bhavin/Desktop/serverFolder/ServerFiles");
+  	d = opendir("/Users/bhavin/Desktop/serverFolder/ServerFiles");			// oh boy !???
   	if (d) {
     		while ((dir = readdir(d)) != NULL) {
       		if (dir->d_type == DT_REG)
