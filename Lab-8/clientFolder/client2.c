@@ -41,7 +41,11 @@ int main(){
 
   char buffer[1024];
   printf("Server has asked to choose a file from the following list: \n");
-  while((bytesRecv = read(clientSock, buffer, 5)) > 0){             // how to use read() function.
+  /*
+  read() Format -
+  ssize_t read(int fs, void *buf, size_t N);
+  */
+  while((bytesRecv = read(clientSock, buffer, 5)) > 0){             // how to use read() ?
     if(strcmp(buffer, "over") == 0) break;
     //printf("Data received: %d\n",bytesRecv);
     printf("Data received: %s\n",buffer);
