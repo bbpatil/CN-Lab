@@ -52,6 +52,7 @@ int main(){
 	listen(server_socket,5);
 
 	int client_socket;
+	// after listening accept.
 	client_socket = accept(server_socket,NULL,NULL);
 	
 	/*
