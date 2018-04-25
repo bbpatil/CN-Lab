@@ -35,6 +35,19 @@ int main(){
 	*/
 	// bind the socket to the specified id and port.
 	bind(server_socket,(struct sockaddr*)&server_address,sizeof(server_address));
+	
+	/*
+	SYNOPSIS
+       #include <sys/types.h>
+       #include <sys/socket.h>
+
+       int listen(int sockfd, int backlog);
+       
+       RETURN VALUE
+       On  success,  zero is returned.  On error, -1 is returned, and errno is
+       set appropriately.
+
+	*/
 
 	listen(server_socket,5);
 
