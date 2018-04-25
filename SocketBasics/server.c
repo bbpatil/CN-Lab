@@ -27,6 +27,10 @@ int main(){
        #include <sys/socket.h>
 
        int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+       
+       RETURN VALUE
+       On  success,  zero is returned.  On error, -1 is returned, and errno is
+       set appropriately.
 
 	*/
 	// bind the socket to the specified id and port.
