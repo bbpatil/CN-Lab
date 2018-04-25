@@ -53,6 +53,24 @@ int main(){
 
 	int client_socket;
 	client_socket = accept(server_socket,NULL,NULL);
+	
+	/*
+	SYNOPSIS
+       #include <sys/types.h>
+       #include <sys/socket.h>
+
+       ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+
+       ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+                      const struct sockaddr *dest_addr, socklen_t addrlen);
+
+       ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
+       
+       RETURN VALUE
+       On success, these calls return the number of bytes sent.  On error,  -1
+       is returned, and errno is set appropriately.
+       
+	*/
 
 	send(client_socket,server_message,sizeof(server_message),0);
 
